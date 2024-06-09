@@ -5,7 +5,6 @@ from functools import reduce
 from operator import and_
 from random import choice
 from string import ascii_uppercase as alphabet
-from time import sleep
 
 from piece import Piece
 
@@ -19,8 +18,8 @@ def display():
         print("  +----+----+----+----+")
 
 def game_finished():
-    diagonal = (grid[x][x] for x in range(4))
-    antidiagonal = (grid[x][3 - x] for x in range(4))
+    diagonal = [grid[x][x] for x in range(4)]
+    antidiagonal = [grid[x][3 - x] for x in range(4)]
     for row in chain(grid, zip(*grid), [diagonal], [antidiagonal]):
         if (all(item >= 0 for item in row)
                 and (reduce(and_, row, 15)
@@ -62,7 +61,6 @@ if __name__ == "__main__":
             # Put the piece to a random valid location on the grid
             empties = {(row, col) for row, col in product(range(4), repeat=2)
                 if grid[row][col] < 0}
-            sleep(1)
             row, col = choice(tuple(empties))
             print(f"Chosen position: {alphabet[row]}{col}")
             grid[row][col] = chosen
@@ -77,7 +75,6 @@ if __name__ == "__main__":
                 finished = True
                 break
             print("\nOpponent's turn")
-            sleep(1)
             chosen = choice(tuple(available))
             available.remove(chosen)
             print(f"Chosen piece: {chosen:04b}")
