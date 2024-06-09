@@ -7,10 +7,10 @@ class Piece(int):
     }
 
     def __str__(self):
-        description = 'Piece'
+        characteristics = []
         for i, (characteristic, values) in enumerate(self.CHARS.items()):
-            description += f', {characteristic}: {values[self >> i & 1]}'
-        return description
+            characteristics.append(f'{values[self >> i & 1]} {characteristic}')
+        return 'Piece: ' + ', '.join(characteristics)
 
 if __name__ == '__main__':
     for i in range(16):
