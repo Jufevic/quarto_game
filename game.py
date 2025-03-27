@@ -11,19 +11,18 @@ if __name__ == "__main__":
     board = Board()
     finished = False
     winner = None
-    available = {Piece(i) for i in range(16)}
     your_turn = True
     while not finished:
         board.display()
         if your_turn:
-            if not available:
+            if not board.available_pieces:
                 finished = True
                 break
             print("\nYour turn")
             # Choose a piece to give to the opponent
             chosen = None
             while chosen is None:
-                pieces = ", ".join(f"{piece:04b}" for piece in available)
+                pieces = ", ".join(f"{piece:04b}" for piece in board.available_pieces)
                 print(f"Available pieces: {pieces}")
                 user_input = input("Choose a number from the available numbers: ")
                 try:
@@ -31,10 +30,10 @@ if __name__ == "__main__":
                 except ValueError:
                     chosen = None
                     print("Invalid choice.")
-                if isinstance(chosen, Piece) and chosen not in available:
+                if isinstance(chosen, Piece) and chosen not in board.available_pieces:
                     print("Piece is already on the board.")
                     chosen = None
-            available.remove(chosen)
+            board.available_pieces.remove(chosen)
             print(f"Chosen piece: {chosen:04b}")
 
             # Put the piece to a random valid location on the grid
@@ -53,12 +52,12 @@ if __name__ == "__main__":
 
         # Opponent's turn
         else:
-            if not available:
+            if not board.available_pieces:
                 finished = True
                 break
             print("\nOpponent's turn")
-            chosen = choice(tuple(available))
-            available.remove(chosen)
+            chosen = choice(tuple(board.available_pieces))
+            board.available_pieces.remove(chosen)
             print(f"Chosen piece: {chosen:04b}")
 
             # Put the piece to a valid location on the grid

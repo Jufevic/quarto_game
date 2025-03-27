@@ -5,14 +5,15 @@ from itertools import chain
 from operator import and_
 from string import ascii_uppercase as alphabet
 
+from piece import Piece
+
 
 class Board:
     """Quarto board class."""
 
-    def __init__(self, grid=None):
-        if grid is None:
-            grid = [[-1] * 4 for _ in range(4)]
-        self.grid = grid
+    def __init__(self):
+        self.grid = [[-1] * 4 for _ in range(4)]
+        self.available_pieces = {Piece(i) for i in range(16)}
 
     def display(self):
         """Print the board state."""
@@ -26,6 +27,7 @@ class Board:
             print("  +----+----+----+----+")
 
     def is_game_finished(self):
+        """Check if the game is finished."""
         diagonal = [self.grid[x][x] for x in range(4)]
         antidiagonal = [self.grid[x][3 - x] for x in range(4)]
         for row in chain(self.grid, zip(*self.grid), [diagonal], [antidiagonal]):
