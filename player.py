@@ -8,6 +8,9 @@ from piece import Piece
 
 
 class Player(ABC):
+    def __init__(self, name="default name"):
+        super().__init__(name=name)
+
     @abstractmethod
     def choose_piece(board: Board) -> Piece:
         """Choose a piece from the set of available pieces to give to the opponent."""

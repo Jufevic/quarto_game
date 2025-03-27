@@ -42,11 +42,11 @@ class Board:
                 return True
         return False
 
-    def put_piece(self, piece: Piece, location: tuple[int, int]):
-        """Put the given piece at the given location on the board."""
+    def put_piece(self, piece: Piece, position: tuple[int, int]):
+        """Put the given piece at the given position on the board."""
         if piece not in self.available_pieces:
             raise IllegalMoveError("The requested piece is already on the board.")
-        row, col = location
+        row, col = position
         self.available_pieces.remove(piece)
         self.empty_positions.remove((row, col))
         self.grid[row][col] = piece
