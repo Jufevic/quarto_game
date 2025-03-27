@@ -23,17 +23,15 @@ class Player(ABC):
 
 
 class HumanPlayer(Player):
-    needs_visualization = True
-
     def choose_piece(board):
-        pass
+        board.display()
 
     def choose_position(board):
-        pass
+        board.display()
 
 
 class RobotPlayer(Player):
-    needs_visualization = False
+    pass
 
 
 class RandomRobotPlayer(RobotPlayer):
@@ -41,4 +39,4 @@ class RandomRobotPlayer(RobotPlayer):
         return choice(tuple(board.available_pieces))
 
     def choose_position(board):
-        pass
+        return choice(tuple(board.empty_positions))

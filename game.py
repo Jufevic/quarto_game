@@ -1,6 +1,6 @@
 """Main game logic."""
 
-from itertools import cycle, product
+from itertools import product
 from random import choice, shuffle
 from string import ascii_uppercase as alphabet
 
@@ -9,24 +9,50 @@ from piece import Piece
 from player import HumanPlayer, Player, RandomRobotPlayer
 
 
+class IllegalMoveError(Exception):
+    pass
+
+
 def play_game(player1: Player, player2: Player):
     """Start a new game"""
     board = Board()
-    finished = False
     winner = None
     # Randomly select the first player
-    players = shuffle([player1, player2])
-    for choosing_player, putting_player in cycle([players, reversed(players)]):
-        if not board.available_pieces:
-            finished = True
-            break
-        chosen_piece = choosing_player.choose_piece(board)
-        chosen_position = putting_player.choose_position(chosen_piece, board)
+    piece_chooser, position_chooser = shuffle([player1, player2])
+
+    # Every turn is divided in two steps: a player chooses a piece, and its
+    # opponent chooses wher to put it
+    while board.available_pieces:
+        # Choose a piece
+        chosen_piece = piece_chooser.choose_piece(board)
+        # Verify the chosen piece validity
+        if chosen_piece not in board.available_pieces:
+            raise IllegalMoveError(
+                f"The requested piece {chosen_piece} is already on the board."
+            )
+
+        # Choose where to put the piece
+        chosen_position = position_chooser.choose_position(chosen_piece, board)
+        # Verify the chosen position validity
+        if chosen_position not in board.empty_positions:
+            raise IllegalMoveError(
+                f"The requested position {chosen_position} is not empty."
+            )
+
+        # Put the piece and verify if the game is finished
         board.put_piece(chosen_piece, chosen_position)
         if board.is_game_finished():
-            finished = True
-            winner = putting_player
+            winner = position_chooser
             break
+
+        # Swap piece choosing player and position choosing player
+        piece_chooser, position_chooser = position_chooser, piece_chooser
+
+    # Game is finished, declare who won
+    if winner is not None:
+        print(f"The winner is {winner.name}!")
+    else:
+        print("Tie! No one wins this time...")
 
 
 def play_against_machine():
