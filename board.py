@@ -8,6 +8,10 @@ from string import ascii_uppercase as alphabet
 from piece import Piece
 
 
+class IllegalMoveError(Exception):
+    pass
+
+
 class Board:
     """Quarto board class."""
 
@@ -36,3 +40,11 @@ class Board:
             ):
                 return True
         return False
+
+    def put_piece(self, piece: Piece, location: tuple[int, int]):
+        """Put the given piece at the given location on the board."""
+        if piece not in self.available_pieces:
+            raise IllegalMoveError("The requested piece is already on the board.")
+        row, col = location
+        self.available_pieces.remove(piece)
+        self.grid[row][col] = piece
