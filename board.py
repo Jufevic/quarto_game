@@ -1,7 +1,7 @@
 """Implement board logic."""
 
 from functools import reduce
-from itertools import chain
+from itertools import chain, product
 from operator import and_
 from string import ascii_uppercase as alphabet
 
@@ -17,6 +17,7 @@ class Board:
 
     def __init__(self):
         self.grid = [[-1] * 4 for _ in range(4)]
+        self.empty_positions = {(r, c) for r, c in product(range(4), repeat=2)}
         self.available_pieces = {Piece(i) for i in range(16)}
 
     def display(self):
@@ -47,4 +48,5 @@ class Board:
             raise IllegalMoveError("The requested piece is already on the board.")
         row, col = location
         self.available_pieces.remove(piece)
+        self.empty_positions.remove((row, col))
         self.grid[row][col] = piece

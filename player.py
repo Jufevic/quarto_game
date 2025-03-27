@@ -1,6 +1,7 @@
 """Possible game-player interactions."""
 
 from abc import ABC, abstractmethod
+from random import choice
 
 from board import Board
 from piece import Piece
@@ -19,6 +20,8 @@ class Player(ABC):
 
 
 class HumanPlayer(Player):
+    needs_visualization = True
+
     def choose_piece(board):
         pass
 
@@ -27,8 +30,12 @@ class HumanPlayer(Player):
 
 
 class RobotPlayer(Player):
+    needs_visualization = False
+
+
+class RandomRobotPlayer(RobotPlayer):
     def choose_piece(board):
-        pass
+        return choice(tuple(board.available_pieces))
 
     def choose_position(board):
         pass
