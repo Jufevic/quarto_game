@@ -48,7 +48,8 @@ def play_game(player1: Player, player2: Player):
         piece_chooser, position_chooser = position_chooser, piece_chooser
 
     # Game is finished, declare who won
-    board.display()
+    alignment = board.find_alignment()
+    board.display(alignment)
     print("Game finished")
     if winner is not None:
         print(f"The winner is {winner.name}!")
