@@ -70,6 +70,7 @@ def play_against_machine(level=0):
     """Start a new game with a human vs a machine."""
     player1 = HumanPlayer(name="player 1")
     player2 = get_robot_player(level=level)
+    player2.name = f"Level {level} robot"
     play_game(player1, player2)
 
 

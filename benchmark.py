@@ -27,4 +27,4 @@ def benchmark_robot(first_level=1, second_level=0, games=1000):
 
 
 if __name__ == "__main__":
-    benchmark_robot(first_level=2, second_level=0)
+    benchmark_robot(first_level=2, second_level=0, games=10000)

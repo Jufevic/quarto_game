@@ -1,5 +1,8 @@
+from game import play_against_machine
+
+
 def main():
-    print("Hello from quarto-game!")
+    play_against_machine(level=2)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ An adaptation of the quarto board game. It's a strategy game, that is played wit
 This package has no external dependencies, it is written in pure Python using libraries from the standard library.
 
 ### Installation instructions
-Clone this repository, then install it using uv: `uv install`. If you don't have uv yet, you can download it by following the [installation instruction](https://docs.astral.sh/uv/getting-started/installation/)
+Clone this repository, then install it using uv: `uv venv` to create a virtual environment, then `uv pip install` . If you don't have uv yet, you can download it by following the [installation instruction](https://docs.astral.sh/uv/getting-started/installation/)
 
 ## Game modes
 You can play in three modes: 
@@ -15,6 +15,7 @@ You can play in three modes:
 * human vs machine
 * machine vs machine
 See the relevant functions in `game.py`
+To start a new game against a machine (by default at level 2), run `main.py`
 
 ## Robot strategy
 There will be four increasing difficulty modes for the machine. Each level applies strategy from the lower levels if the current strategy is not applicable. Currently levels 0, 1 and 2 are implemented.
