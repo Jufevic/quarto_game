@@ -3,7 +3,11 @@
 from random import shuffle
 
 from board import Board
-from player import HumanPlayer, Player, RandomRobotPlayer
+from player import (
+    HumanPlayer,
+    Player,
+    get_robot_player,
+)
 
 
 class IllegalMoveError(Exception):
@@ -57,20 +61,22 @@ def play_game(player1: Player, player2: Player):
         print("Tie! No one wins this time...")
 
 
-def play_against_machine():
+def play_against_machine(level=0):
     """Start a new game with a human vs a machine."""
     player1 = HumanPlayer(name="player 1")
-    player2 = RandomRobotPlayer(name="stupid robot")
+    player2 = get_robot_player(level=level)
     play_game(player1, player2)
 
 
-def play_machine_vs_machine():
+def play_machine_vs_machine(first_level=0, second_level=0):
     """Start a new game with a machine vs another machine."""
-    player1 = RandomRobotPlayer(name="first robot")
-    player2 = RandomRobotPlayer(name="second robot")
+    player1 = get_robot_player(level=first_level)
+    player1.name = "First robot"
+    player2 = get_robot_player(level=second_level)
+    player2.name = "Second robot"
     play_game(player1, player2)
 
 
 if __name__ == "__main__":
-    # play_against_machine()
-    play_machine_vs_machine()
+    # play_against_machine(level=1)
+    play_machine_vs_machine(first_level=0, second_level=1)

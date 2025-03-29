@@ -6,6 +6,7 @@ from string import ascii_uppercase as alphabet
 
 from board import Board
 from piece import Piece
+from strategy import is_winning_position
 
 
 class Player(ABC):
@@ -67,9 +68,38 @@ class RobotPlayer(Player):
     pass
 
 
-class RandomRobotPlayer(RobotPlayer):
+class Level0RobotPlayer(RobotPlayer):
     def choose_piece(self, board):
         return choice(tuple(board.available_pieces))
 
     def choose_position(self, piece, board):
         return choice(tuple(board.empty_positions))
+
+
+class Level1RobotPlayer(RobotPlayer):
+    """A robot player that won't miss an opportunity to win if given a winning
+    piece. But still give its opponent random pieces."""
+
+    def choose_piece(self, board):
+        """Give a randomly chosen piece."""
+        return choice(tuple(board.available_pieces))
+
+    def choose_position(self, piece, board):
+        """Put a given piece at a winning position if possible, else at a
+        random position."""
+        # Try to put the piece here and check if it's a winning position.
+        for position in board.empty_positions:
+            if is_winning_position(piece, board, position):
+                return position
+
+        # As a fallback, return a random position.
+        return choice(tuple(board.empty_positions))
+
+
+def get_robot_player(level=0):
+    """Get a robot player with the given level."""
+    match level:
+        case 0:
+            return Level0RobotPlayer(name="stupid robot")
+        case 1:
+            return Level1RobotPlayer(name="simple robot")

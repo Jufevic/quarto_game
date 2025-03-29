@@ -16,7 +16,7 @@ class Board:
         self.empty_positions = {(r, c) for r, c in product(range(4), repeat=2)}
         self.available_pieces = {Piece(i) for i in range(16)}
 
-    def display(self, highlighted_positions=None):
+    def display(self, highlighted_positions=[]):
         """Print the board state."""
         print("    0    1    2    3  \n  +----+----+----+----+")
         for row in range(4):
