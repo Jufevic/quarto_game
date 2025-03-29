@@ -7,4 +7,21 @@ An adaptation of the quarto board game. It's a strategy game, that is played wit
 This package has no external dependencies, it is written in pure Python using libraries from the standard library.
 
 ### Installation instructions
-Clone this repository, then install it using uv: `uv install`. If you don't have uv yet, youcan download it by following the [installation instruction](https://docs.astral.sh/uv/getting-started/installation/)
+Clone this repository, then install it using uv: `uv install`. If you don't have uv yet, you can download it by following the [installation instruction](https://docs.astral.sh/uv/getting-started/installation/)
+
+## Game modes
+You can play in three modes: 
+* human vs human
+* human vs machine
+* machine vs machine
+See the relevant functions in `game.py`
+
+## Robot strategy
+There will be four increasing difficulty modes for the machine. Each level applies strategy from the lower levels if the current strategy is not applicable. Currently only levels 0 and 1 are implemented.
+* At level 0, the machine chooses pieces and position randomly
+* At level 1, when given a winning piece, the machine will find a position that wins the game.
+* At level 2 (not implemented yet), when possible the machine will avoid giving the opponent a winning piece. 
+* At level 3 (not implemented yet), when choosing a position, the machine will try to find a position, such that the opponent is forced to give a winning piece next turn.
+
+## Benchmark
+There can be robot battles! Currently the winrate of level 1 vs level 0 robot player is at 90% (10000 games average)!

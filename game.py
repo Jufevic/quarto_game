@@ -53,10 +53,15 @@ def play_game(player1: Player, player2: Player):
 
     # Game is finished, declare who won
     alignment = board.find_alignment()
-    board.display(alignment)
+    # Check if this is a tie
+    if alignment is None:
+        board.display()
+    else:
+        board.display(alignment)
     print("Game finished")
     if winner is not None:
         print(f"The winner is {winner.name}!")
+        return winner
     else:
         print("Tie! No one wins this time...")
 
