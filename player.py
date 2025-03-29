@@ -6,7 +6,7 @@ from string import ascii_uppercase as alphabet
 
 from board import Board
 from piece import Piece
-from strategy import is_winning_position
+from strategy import is_winning_piece, is_winning_position
 
 
 class Player(ABC):
@@ -76,13 +76,13 @@ class Level0RobotPlayer(RobotPlayer):
         return choice(tuple(board.empty_positions))
 
 
-class Level1RobotPlayer(RobotPlayer):
+class Level1RobotPlayer(Level0RobotPlayer):
     """A robot player that won't miss an opportunity to win if given a winning
     piece. But still give its opponent random pieces."""
 
     def choose_piece(self, board):
         """Give a randomly chosen piece."""
-        return choice(tuple(board.available_pieces))
+        return super().choose_piece(board)
 
     def choose_position(self, piece, board):
         """Put a given piece at a winning position if possible, else at a
@@ -93,7 +93,29 @@ class Level1RobotPlayer(RobotPlayer):
                 return position
 
         # As a fallback, return a random position.
-        return choice(tuple(board.empty_positions))
+        return super().choose_position(piece, board)
+
+
+class Level2RobotPlayer(Level1RobotPlayer):
+    """A robot player that won't miss an opportunity to win if given a winning
+    piece and will avoid giving its opponent winning pieces."""
+
+    def choose_piece(self, board: Board):
+        """Give a randomly chosen piece."""
+        possible_choices = board.available_pieces.copy()
+        for piece in board.available_pieces:
+            if is_winning_piece(piece, board):
+                possible_choices.remove(piece)
+        if possible_choices:
+            return choice(tuple(possible_choices))
+
+        # If the game is lost anyway, give a random piece
+        return super().choose_piece(board)
+
+    def choose_position(self, piece: Piece, board: Board):
+        """Put a given piece at a winning position if possible, else at a
+        random position."""
+        return super().choose_position(piece, board)
 
 
 def get_robot_player(level=0):
@@ -103,3 +125,5 @@ def get_robot_player(level=0):
             return Level0RobotPlayer(name="stupid robot")
         case 1:
             return Level1RobotPlayer(name="simple robot")
+        case 2:
+            return Level2RobotPlayer(name="simple robot")

@@ -84,4 +84,4 @@ def play_machine_vs_machine(first_level=0, second_level=0):
 
 if __name__ == "__main__":
     # play_against_machine(level=1)
-    play_machine_vs_machine(first_level=0, second_level=1)
+    play_machine_vs_machine(first_level=2, second_level=1)

@@ -17,10 +17,10 @@ You can play in three modes:
 See the relevant functions in `game.py`
 
 ## Robot strategy
-There will be four increasing difficulty modes for the machine. Each level applies strategy from the lower levels if the current strategy is not applicable. Currently only levels 0 and 1 are implemented.
+There will be four increasing difficulty modes for the machine. Each level applies strategy from the lower levels if the current strategy is not applicable. Currently levels 0, 1 and 2 are implemented.
 * At level 0, the machine chooses pieces and position randomly
 * At level 1, when given a winning piece, the machine will find a position that wins the game.
-* At level 2 (not implemented yet), when possible the machine will avoid giving the opponent a winning piece. 
+* At level 2, when possible the machine will avoid giving the opponent a winning piece. 
 * At level 3 (not implemented yet), when choosing a position, the machine will try to find a position, such that the opponent is forced to give a winning piece next turn.
 
 ## Benchmark
