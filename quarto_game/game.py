@@ -14,8 +14,14 @@ class IllegalMoveError(Exception):
     pass
 
 
-def play_game(player1: Player, player2: Player):
-    """Start a new game"""
+def play_game(player1: Player, player2: Player, quiet=False):
+    """
+    Start a new game
+    :param player1: first player
+    :param player2: second player
+    :param quiet: if set to True, don't display anything and just return the
+    winner
+    """
     board = Board()
     winner = None
     # Randomly select the first player
@@ -51,6 +57,10 @@ def play_game(player1: Player, player2: Player):
         # Swap piece choosing player and position choosing player
         piece_chooser, position_chooser = position_chooser, piece_chooser
 
+    # If run in quiet mode, only return the winner
+    if quiet:
+        return winner
+
     # Game is finished, declare who won
     alignment = board.find_alignment()
     # Check if this is a tie
@@ -61,9 +71,9 @@ def play_game(player1: Player, player2: Player):
     print("Game finished")
     if winner is not None:
         print(f"The winner is {winner.name}!")
-        return winner
     else:
         print("Tie! No one wins this time...")
+    return winner
 
 
 def play_against_machine(level=0):
