@@ -1,6 +1,7 @@
-from game import play_game
-from player import get_robot_player
 from tqdm import tqdm
+
+from quarto_game.game import play_game
+from quarto_game.player import get_robot_player
 
 
 def benchmark_robot(first_level=1, second_level=0, games=1000):

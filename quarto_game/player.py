@@ -4,9 +4,9 @@ from abc import ABC, abstractmethod
 from random import choice
 from string import ascii_uppercase as alphabet
 
-from board import Board
-from piece import Piece
-from strategy import is_winning_piece, is_winning_position
+from quarto_game.board import Board
+from quarto_game.piece import Piece
+from quarto_game.strategy import is_winning_piece, is_winning_position
 
 
 class Player(ABC):

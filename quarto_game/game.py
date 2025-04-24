@@ -2,8 +2,8 @@
 
 from random import shuffle
 
-from board import Board
-from player import (
+from quarto_game.board import Board
+from quarto_game.player import (
     HumanPlayer,
     Player,
     get_robot_player,

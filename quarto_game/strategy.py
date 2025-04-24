@@ -3,8 +3,8 @@
 from functools import reduce
 from operator import and_
 
-from board import Board
-from piece import Piece
+from quarto_game.board import Board
+from quarto_game.piece import Piece
 
 
 def is_winning_position(piece: Piece, board: Board, position) -> bool:

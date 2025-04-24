@@ -5,7 +5,7 @@ from itertools import chain, product
 from operator import and_
 from string import ascii_uppercase as alphabet
 
-from piece import Piece
+from quarto_game.piece import Piece
 
 
 class Board:

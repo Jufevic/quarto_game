@@ -1,4 +1,4 @@
-from game import play_against_machine
+from quarto_game.game import play_against_machine
 
 
 def main():
