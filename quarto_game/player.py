@@ -137,7 +137,7 @@ class Level3RobotPlayer(Level2RobotPlayer):
         return super().choose_position(piece, board)
 
 
-def get_robot_player(level=0):
+def get_robot_player(level=0) -> RobotPlayer:
     """Get a robot player with the given level."""
     match level:
         case 0:
@@ -146,3 +146,5 @@ def get_robot_player(level=0):
             return Level1RobotPlayer(name="simple robot")
         case 2:
             return Level2RobotPlayer(name="simple robot")
+        case _:
+            raise ValueError("Unknown robot level")
