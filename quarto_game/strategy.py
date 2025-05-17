@@ -41,8 +41,11 @@ def is_winning_position(piece: Piece, board: Board, position) -> bool:
 
 
 def is_winning_piece(piece: Piece, board: Board):
-    """Check if a given piece would lead to a winning game."""
+    """Check if a given piece would lead to a winning game
+
+    Optimised with the set of critical_positions.
+    """
     return any(
         is_winning_position(piece, board, position)
-        for position in board.empty_positions
+        for position in board.critical_positions
     )

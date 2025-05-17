@@ -100,7 +100,7 @@ class Level2RobotPlayer(Level1RobotPlayer):
     """A robot player that won't miss an opportunity to win if given a winning
     piece and will avoid giving its opponent winning pieces."""
 
-    def choose_piece(self, board: Board):
+    def choose_piece(self, board):
         """Give a non winning piece."""
         possible_choices = board.available_pieces.copy()
         for piece in board.available_pieces:
@@ -112,7 +112,7 @@ class Level2RobotPlayer(Level1RobotPlayer):
         # If the game is lost anyway, give a random piece
         return super().choose_piece(board)
 
-    def choose_position(self, piece: Piece, board: Board):
+    def choose_position(self, piece, board):
         """Put a given piece at a winning position if possible, else at a
         random position."""
         return super().choose_position(piece, board)
@@ -123,11 +123,11 @@ class Level3RobotPlayer(Level2RobotPlayer):
     piece, will avoid giving its opponent winning pieces, and will try to force
     the opponent to give you a winning piece."""
 
-    def choose_piece(self, board: Board):
+    def choose_piece(self, board):
         """Give a non winning piece."""
         return super().choose_piece(board)
 
-    def choose_position(self, piece: Piece, board: Board):
+    def choose_position(self, piece, board):
         """Put a given piece at a winning position if possible, else at a
         random position."""
         for position in board.empty_positions:

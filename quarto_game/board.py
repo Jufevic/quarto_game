@@ -1,7 +1,7 @@
 """Implement board logic."""
 
 from functools import reduce
-from itertools import chain, product
+from itertools import product
 from operator import and_
 from string import ascii_uppercase as alphabet
 
@@ -15,6 +15,23 @@ class Board:
         self.grid = [[-1] * 4 for _ in range(4)]
         self.empty_positions = {(r, c) for r, c in product(range(4), repeat=2)}
         self.available_pieces = {Piece(i) for i in range(16)}
+        self.critical_positions = set()
+        self._update_critical_positions()
+
+    def all_alignments(self):
+        """Returns the list of all alignements (rows, columns, diagonals)."""
+        diagonals = [[(i, i) for i in range(4)], [(i, 3 - i) for i in range(4)]]
+        rows = [[(row, col) for col in range(4)] for row in range(4)]
+        cols = [[(row, col) for row in range(4)] for col in range(4)]
+        return rows + cols + diagonals
+
+    def _update_critical_positions(self):
+        """Update critical positions (those which complete an alignment of 4)."""
+        self.critical_positions.clear()
+        for align in self.all_alignments():
+            empties = [pos for pos in align if self.grid[pos[0]][pos[1]] == -1]
+            if len(empties) == 1:
+                self.critical_positions.add(empties[0])
 
     def display(self, highlighted_positions=[]):
         """Print the board state."""
@@ -39,20 +56,17 @@ class Board:
         self.available_pieces.remove(piece)
         self.empty_positions.remove((row, col))
         self.grid[row][col] = piece
+        self._update_critical_positions()
 
     def find_alignment(self):
         """Try to find a winning alignment in the board.
         If found, return a set of positions."""
-        diagonal = {(x, x) for x in range(4)}
-        antidiagonal = {(x, 3 - x) for x in range(4)}
-        rows = [{(row, col) for col in range(4)} for row in range(4)]
-        cols = [{(row, col) for row in range(4)} for col in range(4)]
-        for line in chain(rows, cols, [diagonal], [antidiagonal]):
-            items = {self.grid[row][col] for row, col in line}
+        for align in self.all_alignments():
+            items = {self.grid[row][col] for row, col in align}
             if all(item >= 0 for item in items) and (
                 reduce(and_, items, 15) or reduce(lambda x, y: x & (15 - y), items, 15)
             ):
-                return line
+                return set(align)
 
     def is_game_finished(self):
         """Check if the game is finished."""
