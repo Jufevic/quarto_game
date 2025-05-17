@@ -62,7 +62,7 @@ def play_game(player1: Player, player2: Player, quiet=False):
         return winner
 
     # Game is finished, declare who won
-    alignment = board.find_alignment()
+    alignment = board.winning_alignment
     # Check if this is a tie
     if alignment is None:
         board.display()

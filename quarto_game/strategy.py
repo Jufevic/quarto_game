@@ -10,6 +10,8 @@ from quarto_game.piece import Piece
 def is_winning_position(piece: Piece, board: Board, position) -> bool:
     """Check if putting the piece on the board at the given position would
     finish the game."""
+    if position not in board.critical_positions:
+        return False
     alignments = board.critical_positions[position]
 
     # Check all alignments, pretending that the piece is at the given position

@@ -18,6 +18,7 @@ class Board:
         self.available_pieces = {Piece(i) for i in range(16)}
         self.game_finished = False
         self.critical_positions = defaultdict(list)
+        self.winning_alignment = None
 
     def _update_critical_positions(self, position: tuple[int, int]):
         """Update critical positions (those which complete an alignment of 4)."""
@@ -75,6 +76,7 @@ class Board:
         for alignment in self.critical_positions[position]:
             if self.is_winning_alignment(alignment):
                 self.game_finished = True
+                self.winning_alignment = alignment
                 break
         else:
             self.game_finished = False
