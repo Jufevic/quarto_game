@@ -15,8 +15,8 @@ class IllegalMoveError(Exception):
 
 
 def play_game(player1: Player, player2: Player, quiet=False):
-    """
-    Start a new game
+    """Start a new game
+
     :param player1: first player
     :param player2: second player
     :param quiet: if set to True, don't display anything and just return the
@@ -50,7 +50,7 @@ def play_game(player1: Player, player2: Player, quiet=False):
 
         # Put the piece and verify if the game is finished
         board.put_piece(chosen_piece, chosen_position)
-        if board.is_game_finished():
+        if board.game_finished:
             winner = position_chooser
             break
 

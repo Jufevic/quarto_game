@@ -1,5 +1,6 @@
 """Implement board logic."""
 
+from collections import defaultdict
 from functools import reduce
 from itertools import product
 from operator import and_
@@ -15,23 +16,28 @@ class Board:
         self.grid = [[-1] * 4 for _ in range(4)]
         self.empty_positions = {(r, c) for r, c in product(range(4), repeat=2)}
         self.available_pieces = {Piece(i) for i in range(16)}
-        self.critical_positions = set()
-        self._update_critical_positions()
+        self.game_finished = False
+        self.critical_positions = defaultdict(list)
 
-    def all_alignments(self):
-        """Returns the list of all alignements (rows, columns, diagonals)."""
-        diagonals = [[(i, i) for i in range(4)], [(i, 3 - i) for i in range(4)]]
-        rows = [[(row, col) for col in range(4)] for row in range(4)]
-        cols = [[(row, col) for row in range(4)] for col in range(4)]
-        return rows + cols + diagonals
-
-    def _update_critical_positions(self):
+    def _update_critical_positions(self, position: tuple[int, int]):
         """Update critical positions (those which complete an alignment of 4)."""
-        self.critical_positions.clear()
-        for align in self.all_alignments():
-            empties = [pos for pos in align if self.grid[pos[0]][pos[1]] == -1]
+        self.critical_positions.pop(position, None)
+        row, col = position
+        # Only update relevant alignments: current row, current column, diagonal
+        # and antidiagonal
+        alignments = [
+            {(row, col) for col in range(4)},
+            {(row, col) for row in range(4)},
+        ]
+        if row == col:
+            alignments.append({(i, i) for i in range(4)})
+        elif row == 3 - col:
+            alignments.append({(i, 3 - i) for i in range(4)})
+        for align in alignments:
+            empties = align & self.empty_positions
             if len(empties) == 1:
-                self.critical_positions.add(empties[0])
+                (element,) = empties
+                self.critical_positions[element].append(align)
 
     def display(self, highlighted_positions=[]):
         """Print the board state."""
@@ -53,22 +59,32 @@ class Board:
     def put_piece(self, piece: Piece, position: tuple[int, int]):
         """Put the given piece at the given position on the board."""
         row, col = position
-        self.available_pieces.remove(piece)
-        self.empty_positions.remove((row, col))
         self.grid[row][col] = piece
-        self._update_critical_positions()
+        # Check if this move finishes the game
+        self._check_if_game_finished(position)
+        self.available_pieces.remove(piece)
+        # Update caches to improve performance
+        self.empty_positions.remove((row, col))
+        self._update_critical_positions(position)
 
-    def find_alignment(self):
-        """Try to find a winning alignment in the board.
-        If found, return a set of positions."""
-        for align in self.all_alignments():
-            items = {self.grid[row][col] for row, col in align}
-            if all(item >= 0 for item in items) and (
-                reduce(and_, items, 15) or reduce(lambda x, y: x & (15 - y), items, 15)
-            ):
-                return set(align)
+    def _check_if_game_finished(self, position):
+        """Check if the game just finished by putting the piece at the given position
 
-    def is_game_finished(self):
-        """Check if the game is finished."""
-        alignment = self.find_alignment()
-        return alignment is not None
+        :param position: Position to check
+        """
+        for alignment in self.critical_positions[position]:
+            if self.is_winning_alignment(alignment):
+                self.game_finished = True
+                break
+        else:
+            self.game_finished = False
+
+    def is_winning_alignment(self, alignment):
+        """Check if the given alignment is winning
+
+        :param alignment: a set of 4 pieces positions
+        """
+        items = {self.grid[row][col] for row, col in alignment}
+        return all(item >= 0 for item in items) and (
+            reduce(and_, items, 15) or reduce(lambda x, y: x & (15 - y), items, 15)
+        )
