@@ -22,7 +22,8 @@ There will be four increasing difficulty modes for the machine. Each level appli
 * At level 0, the machine chooses pieces and position randomly
 * At level 1, when given a winning piece, the machine will find a position that wins the game.
 * At level 2, when possible the machine will avoid giving the opponent a winning piece. 
-* At level 3 (not implemented yet), when choosing a position, the machine will try to find a position, such that the opponent is forced to give a winning piece next turn.
+* At level 3 (not implemented yet), when choosing a position, the machine will try to find a position, such that it can give a non winning piece next turn.
+
 
 ## Benchmark
 There can be robot battles! Currently the winrate of the robots playing against themselves are the following (on a 10000 games average, given as win rate / loss rate / tie rate):
